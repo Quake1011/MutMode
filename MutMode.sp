@@ -29,11 +29,11 @@ public void OnPluginStart()
 public void OnClientDisconnect_Post(client)
 {
     orig[client] = NULL_VECTOR;
-    for(int i = 0;i <= MAXPLAYERS;i++)
+    angl[client] = NULL_VECTOR;
+    for(int i = 0;i <= MaxClients;i++)
     {
-        bTarget[client][i+i] = false;
+        bTarget[client][i] = false;
     }
-    
 }
 
 public Action Cmd_offEvent(int client, int args)

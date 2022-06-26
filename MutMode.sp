@@ -64,11 +64,15 @@ public Action EventPlayerDeath(Event event, const char[] sEvent, bool bDontBroad
             ChangeClientTeam(client, team);
         }
     }
-    SetEntProp(client, Prop_Send, "m_iHealth", 100);
+    
     TeleportOnSpawn(client);
     StartKillerEvent(client, attacker);
 
-    if(bTarget[client][attacker] == true) bTarget[client][attacker] = false;
+    if(bTarget[client][attacker] == true) 
+	{
+		bTarget[client][attacker] = false;
+		SetEntProp(client, Prop_Send, "m_iHealth", GetEntProp(client, Prop_Send, "m_iHealth")+100);
+	}
 
     return Plugin_Continue;
 }
@@ -90,6 +94,7 @@ void TeleportOnSpawn(client)
     GetClientAbsOrigin(client, orig[client]);
     GetClientAbsAngles(client, angl[client]);
     CS_RespawnPlayer(client);
+	SetEntProp(client, Prop_Send, "m_iHealth", 100);
     TeleportEntity(client, orig[client], angl[client], NULL_VECTOR);
 }
 

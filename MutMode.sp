@@ -26,7 +26,7 @@ public void OnPluginStart()
     HookEvent("round_start", EventRoundStart, EventHookMode_Post);
 }
 
-public void OnClientDisconnect_Post(client)
+public void OnClientDisconnect(client)
 {
     orig[client] = NULL_VECTOR;
     angl[client] = NULL_VECTOR;
@@ -46,7 +46,7 @@ public Action Cmd_offEvent(int client, int args)
     return Plugin_Continue;
 }
 
-public Action EventPlayerDeath(Event event, const char[] sEvent, bool bDontBroadCast)
+public void EventPlayerDeath(Event event, const char[] sEvent, bool bDontBroadCast)
 {
     int attacker = GetClientOfUserId(event.GetInt("attacker"));
     int client = GetClientOfUserId(event.GetInt("userid"));
@@ -73,8 +73,6 @@ public Action EventPlayerDeath(Event event, const char[] sEvent, bool bDontBroad
 		bTarget[client][attacker] = false;
 		SetEntProp(client, Prop_Send, "m_iHealth", GetEntProp(client, Prop_Send, "m_iHealth")+100);
 	}
-
-    return Plugin_Continue;
 }
 
 public void StartKillerEvent(int client, int attacker)
@@ -94,11 +92,11 @@ void TeleportOnSpawn(client)
     GetClientAbsOrigin(client, orig[client]);
     GetClientAbsAngles(client, angl[client]);
     CS_RespawnPlayer(client);
-	SetEntProp(client, Prop_Send, "m_iHealth", 100);
+    SetEntProp(client, Prop_Send, "m_iHealth", 100);
     TeleportEntity(client, orig[client], angl[client], NULL_VECTOR);
 }
 
-public Action EventRoundStart(Event event, const char[] sEvent, bool bDontBroadCast)
+public void EventRoundStart(Event event, const char[] sEvent, bool bDontBroadCast)
 {
     int iCount = 0;
     if(GetMaxAlivePlayers(0) % 2 == 0)
@@ -126,7 +124,6 @@ public Action EventRoundStart(Event event, const char[] sEvent, bool bDontBroadC
         }
         ChangeClientTeam(c+1, GetRandomInt(2,3));
     }
-    return Plugin_Continue;
 }
 
 int GetMaxAlivePlayers(int num)
